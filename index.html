@@ -1,0 +1,329 @@
+<link rel="icon" href="2l.png">
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificados - IFX Studios & Hymex Studios</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            background: url('fondo2.jpg') center center fixed; /* Ruta de tu imagen de fondo */
+            background-size: cover;
+        }
+        h1 {
+            color: #ffffff;
+        }
+        form, #additionalButtons {
+            background-color: #79797941;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            margin: 0px auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+        input, select {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4c82af;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #456ca0;
+        }
+        h4{
+            color: white;
+        }
+        #certificate {
+            background-color: rgba(41, 41, 41, 0.548);
+            display: none;
+            margin-top: 20px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 1200px; /* Ajusta el ancho del certificado según tus preferencias */
+            margin: 0 auto;
+        }
+        #certificate img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        #certificate h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 28px; /* Ajusta el tamaño del texto según tus preferencias */
+        }
+        #certificate p {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 18px; /* Ajusta el tamaño del texto según tus preferencias */
+        }
+        #certificate .bold {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px; /* Ajusta el espacio entre el nombre y el contenido siguiente */
+            font-size: 20px; /* Ajusta el tamaño del texto según tus preferencias */
+        }
+        #certificate .cursive {
+            font-style: italic;
+        }
+        #additionalButtons {
+            display: none;
+            margin-top: 20px;
+        }
+        #errorMessage {
+            color: #fff;
+            background-color: #ff0000;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        .closeButton {
+            cursor: pointer;
+            color: #fff;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <a href="/"><img src="2l.png" width="150px" height="150px"></a>
+    </center>
+    <h1>Certificados De Cursos</h1>
+    <h1>De IFX Studios & Hymex Studios</h1>
+    
+    <form id="dataForm">
+        <label for="certificateType">Seleccione el tipo de certificado:</label>
+        <select id="certificateType" required>
+            <option value="vfxIntroMaker">VFX Intro Maker</option>
+            <option value="discordBots">Programación de Bots de Discord</option>
+            <option value="htmlCssJs">Programación de HTML, CSS y JavaScript</option>
+            <option value="cpp">Programación de C++</option>
+            <!-- Agrega más opciones según sea necesario -->
+        </select>
+        <br>
+        <label for="username">Ingrese su nombre:</label>
+        <input type="text" id="username" required>
+        <br>
+        <label for="issueDate">Fecha de emisión:</label>
+        <input type="date" id="issueDate" required>
+        <br>
+        <label for="courseDuration">Duración del curso (en semanas):</label>
+        <input type="number" id="courseDuration" required>
+        <br>
+        <label for="signature">Firma:</label>
+        <input type="text" id="signature" required>
+        <br>
+        <label for="grade">Calificación obtenida:</label>
+        <input type="text" id="grade" required>
+        <br>
+        <button type="button" onclick="generateCertificate()">Generar Certificado</button>
+        <div id="errorMessage">
+            <span id="errorText"></span>
+            <span class="closeButton" onclick="closeErrorMessage()">X</span>
+        </div>
+    </form>
+
+    <div id="certificate">
+        <div id="certificateContent">
+            <!-- Contenido del certificado aquí -->
+        </div>
+    </div>
+
+    <div id="additionalButtons">
+        <button onclick="resetForm()">Regresar y cambiar datos</button>
+    </div>
+
+    <br>
+    <h4>Copyright © 2024 IFX Stuios & Hymex Studios</h4>
+
+    <script>
+        function generateCertificate() {
+            const certificateType = document.getElementById('certificateType').value;
+            const username = document.getElementById('username').value;
+            const issueDate = document.getElementById('issueDate').value;
+            const courseDuration = document.getElementById('courseDuration').value;
+            const signature = document.getElementById('signature').value;
+            const grade = document.getElementById('grade').value;
+
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+
+            // Verificar si todos los campos están llenos
+            if (certificateType && username && issueDate && courseDuration && signature && grade) {
+                // Mostrar el certificado correspondiente
+                showCertificate(certificateType, username, issueDate, courseDuration, signature, grade);
+
+                // Actualizar la URL con el tipo de certificado seleccionado
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('certType', certificateType);
+                history.replaceState(null, null, '?' + urlParams.toString());
+
+                // Ocultar mensaje de error si estaba visible
+                errorMessage.style.display = 'none';
+            } else {
+                // Mostrar mensaje de error
+                errorText.textContent = 'Por favor, complete todos los campos.';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        function showCertificate(certificateType, username, issueDate, courseDuration, signature, grade) {
+            // Ocultar el formulario y mostrar el certificado
+            document.getElementById('dataForm').style.display = 'none';
+            document.getElementById('additionalButtons').style.display = 'block';
+            const certificate = document.getElementById('certificate');
+            certificate.style.display = 'block';
+
+            // Rellenar el contenido del certificado según el tipo
+            const certificateContent = document.getElementById('certificateContent');
+            certificateContent.innerHTML = ''; // Limpiar contenido anterior
+
+            // Agregar el logo del curso
+            const logoImg = document.createElement('img');
+            logoImg.src = getLogoSrc(certificateType);
+            logoImg.alt = 'Logo del curso';
+            logoImg.style.width = '300px'; // Ajusta el tamaño según tus preferencias
+            certificateContent.appendChild(logoImg);
+
+            // Agregar el título del certificado
+            const title = document.createElement('h2');
+            title.textContent = getCertificateTitle(certificateType);
+            certificateContent.appendChild(title);
+
+            // Agregar los párrafos del certificado
+            const paragraphs = getCertificateParagraphs(certificateType, username, issueDate, courseDuration, signature, grade);
+            paragraphs.forEach(paragraphText => {
+                const paragraph = document.createElement('p');
+                paragraph.textContent = paragraphText;
+                certificateContent.appendChild(paragraph);
+            });
+        }
+
+        function getLogoSrc(certificateType) {
+            // Devuelve la ruta del logo según el tipo de certificado
+            switch (certificateType) {
+                case 'vfxIntroMaker':
+                    return '2l.png'; // Reemplaza con la ruta correcta
+                case 'discordBots':
+                    return '2l.png'; // Reemplaza con la ruta correcta
+                case 'htmlCssJs':
+                    return '2l.png'; // Reemplaza con la ruta correcta
+                case 'cpp':
+                    return '2l.png'; // Reemplaza con la ruta correcta
+                default:
+                    return '2l.png'; // Reemplaza con la ruta correcta
+            }
+        }
+
+        function getCertificateTitle(certificateType) {
+            // Devuelve el título del certificado según el tipo
+            switch (certificateType) {
+                case 'vfxIntroMaker':
+                    return 'Certificado de VFX Intro Maker';
+                case 'discordBots':
+                    return 'Certificado de Programación de Bots de Discord';
+                case 'htmlCssJs':
+                    return 'Certificado de Programación de HTML, CSS y JavaScript';
+                case 'cpp':
+                    return 'Certificado de Programación de C++';
+                default:
+                    return 'Certificado de Curso';
+            }
+        }
+
+        function getCertificateParagraphs(certificateType, username, issueDate, courseDuration, signature, grade) {
+            // Devuelve un array de párrafos según el tipo de certificado
+            switch (certificateType) {
+                case 'vfxIntroMaker':
+                    return [
+                        `Este certificado reconoce que ${username} ha completado exitosamente el curso de VFX Intro Maker.`,
+                        `Ve y demuestra lo que aprendiste a las demás personas. ¡Es hora de compartir tu talento!`,
+                        `Fecha de emisión: ${issueDate}`,
+                        `Duración del curso: ${courseDuration} semanas`,
+                        `Firma: ${signature}`,
+                        `Calificación obtenida: ${grade}`,
+                        `¡Felicidades por tu logro!`
+                    ];
+                case 'discordBots':
+                    return [
+                        `Este certificado reconoce que ${username} ha completado exitosamente el curso de Programación de Bots de Discord.`,
+                        `Ve y demuestra lo que aprendiste a las demás personas. ¡Es hora de compartir tu talento!`,
+                        `Fecha de emisión: ${issueDate}`,
+                        `Duración del curso: ${courseDuration} semanas`,
+                        `Firma: ${signature}`,
+                        `Calificación obtenida: ${grade}`,
+                        `¡Felicidades por tu logro!`
+                    ];
+                case 'htmlCssJs':
+                    return [
+                        `Este certificado reconoce que ${username} ha completado exitosamente el curso de Programación de HTML, CSS y JavaScript.`,
+                        `Ve y demuestra lo que aprendiste a las demás personas. ¡Es hora de compartir tu talento!`,
+                        `Fecha de emisión: ${issueDate}`,
+                        `Duración del curso: ${courseDuration} semanas`,
+                        `Firma: ${signature}`,
+                        `Calificación obtenida: ${grade}`,
+                        `¡Felicidades por tu logro!`
+                    ];
+                default:
+                    return [
+                        `Este certificado reconoce que ${username} ha completado exitosamente un curso.`,
+                        `Fecha de emisión: ${issueDate}`,
+                        `Duración del curso: ${courseDuration} semanas`,
+                        `Firma: ${signature}`,
+                        `Calificación obtenida: ${grade}`,
+                        `¡Felicidades por tu logro!`
+                    ];
+            }
+        }
+
+        function resetForm() {
+            // Ocultar el certificado y los botones adicionales, y mostrar el formulario nuevamente
+            document.getElementById('certificate').style.display = 'none';
+            document.getElementById('dataForm').style.display = 'block';
+            document.getElementById('additionalButtons').style.display = 'none';
+
+            // Restablecer los valores de los campos del formulario
+            document.getElementById('certificateType').value = 'vfxIntroMaker'; // Establece el valor predeterminado
+            document.getElementById('username').value = '';
+            document.getElementById('issueDate').value = '';
+            document.getElementById('courseDuration').value = '';
+            document.getElementById('signature').value = '';
+            document.getElementById('grade').value = '';
+        }
+
+        function closeErrorMessage() {
+            // Ocultar el mensaje de error
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Función para obtener el tipo de certificado desde la URL
+        function getCertificateTypeFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('certType') || 'vfxIntroMaker'; // Valor predeterminado si no se especifica
+        }
+
+        // Configurar el tipo de certificado al cargar la página
+        document.getElementById('certificateType').value = getCertificateTypeFromUrl();
+    </script>
+</body>
+</html>
