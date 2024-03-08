@@ -1,29 +1,29 @@
-<link rel="icon" href="2l.png">
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificados - IFX Studios & Hymex Studios</title>
+    <link rel="icon" href="2l.png">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
             margin: 0;
-            background: url('fondo2.jpg') center center fixed; /* Ruta de tu imagen de fondo */
+            background: url('fondo2.jpg') center center fixed;
             background-size: cover;
+            padding: 10px;
         }
         h1 {
             color: #ffffff;
         }
-        form, #additionalButtons {
+        form, #additionalButtons, #certificate {
             background-color: #79797941;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 500px;
-            margin: 0px auto;
+            margin: 10px auto; /* Centrar en la página */
+            max-width: 600px; /* Ancho máximo por defecto en dispositivos más grandes */
         }
         label {
             display: block;
@@ -48,46 +48,9 @@
         button:hover {
             background-color: #456ca0;
         }
-        h4{
+        h4 {
             color: white;
-        }
-        #certificate {
-            background-color: rgba(41, 41, 41, 0.548);
-            display: none;
-            margin-top: 20px;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 1200px; /* Ajusta el ancho del certificado según tus preferencias */
-            margin: 0 auto;
-        }
-        #certificate img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 30px;
-        }
-        #certificate h2 {
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-size: 28px; /* Ajusta el tamaño del texto según tus preferencias */
-        }
-        #certificate p {
-            color: #ffffff;
-            margin-bottom: 15px;
-            font-size: 18px; /* Ajusta el tamaño del texto según tus preferencias */
-        }
-        #certificate .bold {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px; /* Ajusta el espacio entre el nombre y el contenido siguiente */
-            font-size: 20px; /* Ajusta el tamaño del texto según tus preferencias */
-        }
-        #certificate .cursive {
-            font-style: italic;
-        }
-        #additionalButtons {
-            display: none;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         #errorMessage {
             color: #fff;
@@ -101,6 +64,46 @@
             cursor: pointer;
             color: #fff;
             float: right;
+        }
+
+        /* Estilos para dispositivos móviles */
+        @media (max-width: 600px) {
+            form, #additionalButtons, #certificate {
+                width: 90%; /* Ancho del 90% en dispositivos móviles */
+            }
+        }
+
+        /* Estilos específicos para el certificado */
+        #certificate {
+            background-color: rgba(41, 41, 41, 0.548);
+            display: none;
+            margin-top: 20px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 70%; /* Ancho del 100% en dispositivos más grandes */
+            margin: 0 auto;
+            color: #ffffff; /* Color del texto del certificado */
+        }
+        #certificate img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        #certificate h2 {
+            margin-bottom: 20px;
+            font-size: 28px; /* Ajusta el tamaño del texto según tus preferencias */
+        }
+        #certificate p {
+            margin-bottom: 15px;
+            font-size: 18px; /* Ajusta el tamaño del texto según tus preferencias */
+        }
+        #certificate .bold {
+            margin-top: 15px; /* Ajusta el espacio entre el nombre y el contenido siguiente */
+            font-size: 20px; /* Ajusta el tamaño del texto según tus preferencias */
+        }
+        #certificate .cursive {
+            font-style: italic;
         }
     </style>
 </head>
@@ -149,7 +152,7 @@
         </div>
     </div>
 
-    <div id="additionalButtons">
+    <div id="additionalButtons" style="display: none;">
         <button onclick="resetForm()">Regresar y cambiar datos</button>
     </div>
 
@@ -180,17 +183,20 @@
 
                 // Ocultar mensaje de error si estaba visible
                 errorMessage.style.display = 'none';
+                // Mostrar el botón "Regresar y cambiar datos" después de generar el certificado
+                document.getElementById('additionalButtons').style.display = 'block';
             } else {
                 // Mostrar mensaje de error
                 errorText.textContent = 'Por favor, complete todos los campos.';
                 errorMessage.style.display = 'block';
+                // Ocultar el botón "Regresar y cambiar datos" si hay un error
+                document.getElementById('additionalButtons').style.display = 'none';
             }
         }
 
         function showCertificate(certificateType, username, issueDate, courseDuration, signature, grade) {
             // Ocultar el formulario y mostrar el certificado
             document.getElementById('dataForm').style.display = 'none';
-            document.getElementById('additionalButtons').style.display = 'block';
             const certificate = document.getElementById('certificate');
             certificate.style.display = 'block';
 
